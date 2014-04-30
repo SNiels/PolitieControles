@@ -1,6 +1,8 @@
 package be.howest.nmct.politiecontroles.app;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -32,6 +34,7 @@ public class ControlesActivity extends ActionBarActivity implements ControlesFra
     private DrawerLayout drawer;
     private SnelheidsControle selectedControle;
     private final List<String> filters=new ArrayList<String>();
+    private ActionBarDrawerToggle mDrawerToggle;
 
 
     @Override
@@ -48,6 +51,16 @@ public class ControlesActivity extends ActionBarActivity implements ControlesFra
                 new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,filters),this
         );
         drawer=(DrawerLayout)findViewById(R.id.drawer);
+        if(drawer!=null)
+        {
+              mDrawerToggle = new ActionBarDrawerToggle(this, drawer,
+                    R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
+
+            // Set the drawer toggle as the DrawerListener
+            drawer.setDrawerListener(mDrawerToggle);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         if (savedInstanceState == null) {
             controlesFragment=new ControlesFragment();
@@ -122,6 +135,9 @@ public class ControlesActivity extends ActionBarActivity implements ControlesFra
         if (id == R.id.action_settings) {
             return true;
         }
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -169,5 +185,18 @@ public class ControlesActivity extends ActionBarActivity implements ControlesFra
     public boolean onNavigationItemSelected(int i, long l) {
         controlesFragment.filter(i);
         return false;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 }
