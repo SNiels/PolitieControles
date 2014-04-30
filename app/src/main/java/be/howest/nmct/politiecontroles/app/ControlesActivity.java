@@ -135,7 +135,7 @@ public class ControlesActivity extends ActionBarActivity implements ControlesFra
         if (id == R.id.action_settings) {
             return true;
         }
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle!=null&&mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -191,12 +191,14 @@ public class ControlesActivity extends ActionBarActivity implements ControlesFra
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+        if(mDrawerToggle!=null)
+             mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        if(mDrawerToggle!=null)
+            mDrawerToggle.onConfigurationChanged(newConfig);
     }
 }
